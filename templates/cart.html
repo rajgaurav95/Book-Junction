@@ -1,0 +1,499 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+body {
+    color: #000;
+    overflow-x: hidden;
+    height: 100%;
+    background-color: #fff;
+    background-repeat: no-repeat
+}
+
+.plus-minus {
+    position: relative
+}
+
+.plus {
+    position: absolute;
+    top: -4px;
+    left: 2px;
+    cursor: pointer
+}
+
+.minus {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+    cursor: pointer
+}
+
+.vsm-text:hover {
+    color: #FF5252
+}
+
+.book,
+.book-img {
+    width: 120px;
+    height: 180px;
+    border-radius: 5px
+}
+
+.book {
+    margin: 20px 15px 5px 15px
+}
+
+.border-top {
+    border-top: 1px solid #EEEEEE !important;
+    margin-top: 20px;
+    padding-top: 15px
+}
+
+.card {
+    margin: 40px 0px;
+    padding: 40px 50px;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 1px 5px 10px 1px rgba(0, 0, 0, 0.2)
+}
+
+input,
+textarea {
+    background-color: #F3E5F5;
+    padding: 8px 15px 8px 15px;
+    width: 100%;
+    border-radius: 5px !important;
+    box-sizing: border-box;
+    border: 1px solid #F3E5F5;
+    font-size: 15px !important;
+    color: #000 !important;
+    font-weight: 300
+}
+
+input:focus,
+textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #9FA8DA;
+    outline-width: 0;
+    font-weight: 400
+}
+
+button:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0
+}
+
+.pay {
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #673AB7;
+    margin: 10px 20px 10px 0px;
+    cursor: pointer;
+    box-shadow: 1px 5px 10px 1px rgba(0, 0, 0, 0.2)
+}
+
+.gray {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    filter: grayscale(100%);
+    color: #E0E0E0
+}
+
+.gray .pay {
+    box-shadow: none
+}
+
+#tax {
+    border-top: 1px lightgray solid;
+    margin-top: 10px;
+    padding-top: 10px
+}
+
+.btn-blue {
+    border: none;
+    border-radius: 10px;
+    background-color: #673AB7;
+    color: #fff;
+    padding: 8px 15px;
+    margin: 20px 0px;
+    cursor: pointer
+}
+
+.btn-blue:hover {
+    background-color: #311B92;
+    color: #fff
+}
+
+#checkout {
+    float: left
+}
+
+#check-amt {
+    float: right
+}
+
+@media screen and (max-width: 768px) {
+
+    .book,
+    .book-img {
+        width: 100px;
+        height: 150px
+    }
+
+    .card {
+        padding-left: 15px;
+        padding-right: 15px
+    }
+
+    .mob-text {
+        font-size: 13px
+    }
+
+    .pad-left {
+        padding-left: 20px
+    }
+}
+</style>
+{% endblock style %}
+{% block content %}
+<div class="container px-4 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-5">
+            <h4 class="heading">Shopping Bag</h4>
+        </div>
+        <div class="col-7">
+            <div class="row text-right">
+            <div class="col-3">
+                    <h6 class="mt-2">Format</h6>
+                </div>
+               
+                <div class="col-3">
+                    <h6 class="mt-2">Quantity</h6>
+                </div>
+                <div class="col-3">
+                    <h6 class="mt-2">Price</h6>
+                </div>
+                 <div class="col-3">
+                    <h6 class="mt-2">Remove</h6>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div id="main_container">
+    <div class="row d-flex justify-content-center border-top">
+        <div class="col-5">
+            <div class="row d-flex">
+                <div class="book"> <img src="https://i.imgur.com/2DsA49b.jpg" class="book-img"> </div>
+                <div class="my-auto flex-column d-flex pad-left">
+                    <h6 class="mob-text">Thinking, Fast and Slow</h6>
+                    <p class="mob-text">Daniel Kahneman</p>
+                </div>
+            </div>
+        </div>
+        <div class="my-auto col-7">
+            <div class="row text-right">
+                <div class="col-3">
+                    <p class="mob-text">Digital</p>
+                </div>
+                <div class="col-3">
+                    <div class="row d-flex justify-content-end px-3">
+                        <p class="mb-0" id="cnt1">1</p>
+                        <div class="d-flex flex-column plus-minus"> <span class="vsm-text plus">+</span> <span class="vsm-text minus">-</span> </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <h6 class="mob-text">$9.99</h6>
+                </div>
+                 <div class="col-3">
+                    <h6 class="mob-text"></h6>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center border-top">
+        <div class="col-5">
+            <div class="row d-flex">
+                <div class="book"> <img src="https://i.imgur.com/Oj1iQUX.jpg" class="book-img"> </div>
+                <div class="my-auto flex-column d-flex pad-left">
+                    <h6 class="mob-text">Homo Deus: A Brief<br>History of Tomorrow</h6>
+                    <p class="mob-text">Yuval Noah Harari</p>
+                </div>
+            </div>
+        </div>
+        <div class="my-auto col-7">
+            <div class="row text-right">
+                <div class="col-4">
+                    <p class="mob-text">Paperback</p>
+                </div>
+                <div class="col-4">
+                    <div class="row d-flex justify-content-end px-3">
+                        <p class="mb-0" id="cnt2">1</p>
+                        <div class="d-flex flex-column plus-minus"> <span class="vsm-text plus">+</span> <span class="vsm-text minus">-</span> </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <h6 class="mob-text">$13.50</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="row">
+                    <div class="col-lg-3 radio-group">
+                        <div class="row d-flex px-3 radio"> <img class="pay" src="https://i.imgur.com/WIAP9Ku.jpg">
+                            <p class="my-auto">Credit Card</p>
+                        </div>
+                        <div class="row d-flex px-3 radio gray"> <img class="pay" src="https://i.imgur.com/OdxcctP.jpg">
+                            <p class="my-auto">Debit Card</p>
+                        </div>
+                        <div class="row d-flex px-3 radio gray mb-3"> <img class="pay" src="https://i.imgur.com/cMk1MtK.jpg">
+                            <p class="my-auto">PayPal</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="row px-2">
+                            <div class="form-group col-md-6"> <label class="form-control-label">Name on Card</label> <input type="text" id="cname" name="cname" placeholder="Johnny Doe"> </div>
+                            <div class="form-group col-md-6"> <label class="form-control-label">Card Number</label> <input type="text" id="cnum" name="cnum" placeholder="1111 2222 3333 4444"> </div>
+                        </div>
+                        <div class="row px-2">
+                            <div class="form-group col-md-6"> <label class="form-control-label">Expiration Date</label> <input type="text" id="exp" name="exp" placeholder="MM/YYYY"> </div>
+                            <div class="form-group col-md-6"> <label class="form-control-label">CVV</label> <input type="text" id="cvv" name="cvv" placeholder="***"> </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-2">
+                        <div class="row d-flex justify-content-between px-4">
+                            <p class="mb-1 text-left">Subtotal</p>
+                             <h6 class="mb-1 text-right" id="subtotal"> </h6>
+                        </div>
+                        <div class="row d-flex justify-content-between px-4">
+                            <p class="mb-1 text-left">Shipping</p>
+                            <h6 class="mb-1 text-right"> 10</h6>
+                        </div>
+                        <div class="row d-flex justify-content-between px-4" id="tax">
+                            <p class="mb-1 text-left">Total (tax included)</p>
+                             <h6 class="mb-1 text-right" id="withtax"></h6>
+                        </div> <a href="{% url 'checkout' %}" class="btn btn-block btn-blue text-center"> <span> <span id="checkout">Purchase</span> <span>&#8377;</span> <span id="check-amt"> </span> </span> </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-between px-4 text-center" id="tax">
+         <h6 class="mb-1 text-right" id="withtax"></h6>
+    <a href="{% url 'checkout' %}" class="btn-block btn-blue text-center"> Click to Purchase</a>
+</div> 
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+ function remove(id){
+
+        var formData = new FormData();
+        formData.append('id',id);
+
+
+        $.ajax({
+    url: 'http://127.0.0.1:8000/book/cart/',
+    data : formData,
+    processData: false,
+
+    contentType: false,
+
+    headers: {
+                      "X-CSRFTOKEN": "{{ csrf_token }}"
+              },
+    type: 'DELETE',
+    success: function(result) {
+        window.location.reload();
+    }
+});
+
+    }
+
+
+
+    function update(id,sign){
+
+        var formData = new FormData();
+        formData.append('id',id);
+        formData.append('sign',sign);
+
+
+        $.ajax({
+    url: 'http://127.0.0.1:8000/book/cart/',
+    data : formData,
+    processData: false,
+
+    contentType: false,
+
+    headers: {
+                      "X-CSRFTOKEN": "{{ csrf_token }}"
+              },
+    type: 'PUT',
+    success: function(result) {
+        window.location.reload();
+    }
+});
+
+    }
+
+    $( document ).ready(function() {
+        $.ajax({
+    url: 'http://127.0.0.1:8000/book/cart/',
+    type: 'GET',
+    success: function(result) {
+
+    var element = document.getElementById("main_container");
+    element.innerHTML=""
+    var data =result
+    console.log(data)
+    for(let i=0;i<data.length;i++){
+
+    var row_flex=document.createElement("div");
+    row_flex.classList.add("row","d-flex","justify-content-center","border-top");
+    var h6=document.createElement("h6")
+    var p=document.createElement("p")
+    h6.classList.add("mob-text")
+    p.classList.add("mob-text")
+    h6.innerText = data[i]['book']['title'];
+    p.innerText = data[i]['book']['publisher']['name'];
+
+    var myauto_flex=document.createElement("div");
+    myauto_flex.classList.add("my-auto","d-flex","flex-column","pad-left");
+    myauto_flex.appendChild(h6);
+    myauto_flex.appendChild(p);
+
+    var img = document.createElement("img");
+    img.classList.add("book-img")
+    img.src="http://127.0.0.1:8000"+data[i]["book"]['cover_image'];
+    var book_div = document.createElement("div");
+    book_div.classList.add("book")
+    book_div.appendChild(img)
+    var inner_flex_div = document.createElement("div");
+    inner_flex_div.classList.add("row","d-flex")
+    inner_flex_div.appendChild(book_div)
+
+    inner_flex_div.appendChild(myauto_flex)
+
+    var col5_div = document.createElement("div");
+    col5_div.classList.add("col-5");
+    col5_div.appendChild(inner_flex_div);
+    row_flex.appendChild(col5_div);
+
+    var p_col4_1=document.createElement("p");
+    p_col4_1.classList.add("mob-text");
+    p_col4_1.innerText = "Hard Copy";
+    var col4_div1 = document.createElement("div");
+    col4_div1.classList.add("col-3");
+    col4_div1.appendChild(p_col4_1);
+
+
+    var span_plus=document.createElement("span")
+    var span_minus=document.createElement("span")
+    span_plus.classList.add("vsm-text","plus")
+    span_minus.classList.add("vsm-text","minus")
+    span_plus.innerText = "+";
+    span_minus.innerText = "-";
+    span_plus.setAttribute('onclick', "update('"+data[i]['id']+"','+')")
+    span_minus.setAttribute('onclick', "update('"+data[i]['id']+"','-')")
+
+    var plus_minus_div = document.createElement("div");
+    plus_minus_div.classList.add("d-flex","flex-column","plus-minus");
+    plus_minus_div.appendChild(span_plus);
+    plus_minus_div.appendChild(span_minus);
+    var p_col4_2_flex=document.createElement("p");
+    p_col4_2_flex.classList.add("mb-0");
+    p_col4_2_flex.setAttribute('id', 'cnt1')
+    p_col4_2_flex.innerText = data[i]['quantity'];
+    var q_div = document.createElement("div");
+    q_div.classList.add("d-flex","row","justify-content-end","px-3");
+    q_div.appendChild(p_col4_2_flex);
+    q_div.appendChild(plus_minus_div);
+    var col4_div2 = document.createElement("div");
+    col4_div2.classList.add("col-3");
+    col4_div2.appendChild(q_div);
+
+    var col4_div3 = document.createElement("div");
+    col4_div3.classList.add("col-3");
+    var col4_div3_h6 = document.createElement("h6");
+    col4_div3_h6.classList.add("mob-text");
+    col4_div3_h6.innerText=data[i]['book']['price'];
+    col4_div3.appendChild(col4_div3_h6);
+
+    var col4_div4 = document.createElement("div");
+    col4_div4.classList.add("col-3");
+    var btn = document.createElement("button");
+    btn.classList.add("btn","btn-success");
+    btn.innerText="remove";
+    btn.setAttribute('onclick', "remove('"+data[i]['id']+"')");
+    col4_div4.appendChild(btn);
+
+
+
+
+    var row_txt_right = document.createElement("div");
+    row_txt_right.classList.add("row","text-right");
+    var myauto_col7 = document.createElement("div");
+    myauto_col7.classList.add("my-auto","col-7");
+    row_txt_right.appendChild(col4_div1);
+    row_txt_right.appendChild(col4_div2);
+    row_txt_right.appendChild(col4_div3);
+    row_txt_right.appendChild(col4_div4);
+
+    myauto_col7.appendChild(row_txt_right);
+
+    row_flex.appendChild(col5_div);
+    row_flex.appendChild(myauto_col7);
+    element.appendChild(row_flex)
+    
+    
+    var ruppes = document.createElement("span");
+        ruppes.innerText= "&#8377;"
+
+    var subtotal = document.getElementById("subtotal");
+    subtotal.innerText = data[i]['cart']['total_price'];
+    var withtax = document.getElementById("withtax");
+    withtax.innerText = data[i]['cart']['total_price']+10;
+
+    var check_amt = document.getElementById("check-amt");
+    check_amt.innerText = data[i]['cart']['total_price']+10;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    }
+});});
+</script>
+{% endblock script %}
+

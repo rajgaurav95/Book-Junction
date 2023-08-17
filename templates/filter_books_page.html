@@ -1,0 +1,564 @@
+{% extends 'base2.html'%}
+{% load static %}
+{% block style %}
+<style>
+/* .container-fluid {
+    background-color: #eee
+} */
+
+.t-products {
+    background-image: linear-gradient( 110.1deg,  rgba(34,126,34,1) 2.9%, rgba(168,251,60,1) 90.3% );
+    color: #fff;
+    border-radius: 3px
+}
+
+.processor {
+    background-color: #fff;
+    margin-top: 5px;
+    border-bottom: 1px solid #eee
+}
+
+.brand {
+    background-color: #fff;
+    border-bottom: 1px solid #eee
+}
+
+.type {
+    background-color: #fff
+}
+
+.product {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    position: relative
+}
+
+.about span {
+    color: #5629c0;
+    font-size: 16px
+}
+
+.cart-button button {
+    font-size: 12px;
+    color: #fff;
+    background: linear-gradient( 110.1deg,  rgba(34,126,34,1) 2.9%, rgba(168,251,60,1) 90.3% );
+    height: 38px
+}
+
+.cart-button button:focus,
+button:active {
+    font-size: 12px;
+    color: #fff;
+    background-color: #5629c0;
+    box-shadow: none
+}
+
+.product_fav i {
+    line-height: 40px;
+    color: #5629c0;
+    font-size: 15px
+}
+
+.product_fav {
+    display: inline-block;
+    width: 36px;
+    height: 39px;
+    background: #FFFFFF;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 11%;
+    text-align: center;
+    cursor: pointer;
+    margin-left: 3px;
+    -webkit-transition: all 200ms ease;
+    -moz-transition: all 200ms ease;
+    -ms-transition: all 200ms ease;
+    -o-transition: all 200ms ease;
+    transition: all 200ms ease
+}
+
+.product_fav:hover {
+    background: #5629c0
+}
+
+.product_fav:hover i {
+    color: #fff
+}
+
+.about {
+    margin-top: 12px
+}
+
+.off {
+    position: absolute;
+    left: 65%;
+    top: 6%;
+    width: 80px;
+    text-align: center;
+    height: 30px;
+    line-height: 8px;
+    border-radius: 5px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff
+}
+
+
+
+  
+  
+</style>
+{% endblock style %}
+
+{% block content %}
+
+
+<div class="container-fluid mt-5 mb-5">
+    <div class="row g-2">
+        <div class="col-md-3">
+           
+            <div class="t-products p-2">
+                <div class="search-container">
+                    <form class="form-group" id="search_form">
+                        <div class="input-group mb-3">
+                            <input type="text" placeholder="search.." id="search_field" class="form-control">
+
+                            <div class="input-group-append">
+                              <button class="btn btn-success" type="submit">Search</button>
+                            </div>
+                          </div>
+                    </form>
+                  </div>
+                <h6 class="text-uppercase">Genres</h6>
+                <div class="p-lists">
+                    {% for cat in genres %}
+                    <div class="d-flex justify-content-between mt-2"><a href="{% url 'filter_books_page' %}?id={{cat.id}}"><span class="text-white">{{cat.name}}</span></a>  <span>{{cat.get_book_count}}</span> </div>
+                   {% endfor %}
+                </div>
+            </div>
+            <div class="processor p-2">
+                <div class="heading d-flex justify-content-between align-items-center">
+                    <h6 class="text-uppercase">Price</h6> <span>--</span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="x_1" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault"> 200-399 <span>&#8377;</span>
+                    </label> </div> <span></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="x_2" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> 499-999 <span>&#8377;</span>
+                    </label> </div> <span></span>
+
+
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="x_3" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> 999-1499 <span>&#8377;</span>
+                    </label> </div> <span></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="x_4" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> 1499-1999 <span>&#8377;</span>
+                    </label> </div> <span></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="x_5" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> greater then 1999 <span>&#8377;</span>
+                    </label> </div> <span></span>
+                </div>
+            </div>
+            <div class="brand p-2">
+                <div class="heading d-flex justify-content-between align-items-center">
+                    <h6 class="text-uppercase">Ratings</h6> <span>--</span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="rate_1" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault"><i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+
+
+                    </label> </div> <span></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="rate_2" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+
+
+
+                    </label> </div> <span></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="rate_3" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+
+                    </label> </div> <span></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="rate_4" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+
+                    </label> </div> <span></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="rate_5" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+
+
+                    </label> </div> <span></span>
+                </div>
+            </div>
+            <div class="type p-2 mb-2">
+                <div class="heading d-flex justify-content-between align-items-center">
+                    <h6 class="text-uppercase">Group By</h6> 
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="y_1" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault"> Authors </label> </div> 
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="y_2" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> price </label> </div> 
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="y_3" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> geners </label> </div> 
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="form-check"> <input class="form-check-input" type="checkbox" value="rate" id="flexCheckChecked" checked> <label class="form-check-label" for="flexCheckChecked"> ratings </label> </div> 
+                </div>
+               
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div id="main_product" class="row g-2">
+                {% if books %}
+                {% for book in books %}
+                <div class="col-md-4">
+                    <div class="product py-4 "> <span class="off bg-success">-25% OFF</span>
+                        <div class="text-center"> <img src="{{book.cover_image.url}}" width="200" height="250"> </div>
+                        <div class="about text-center">
+                            <h5><a href="{% url 'book_details' book.id %}" class="">{{book.title}}</a></h5> <span>{{book.price}} <span>&#8377;</span>
+                        </span>
+                        </div>
+                        <div class="cart-button mt-3 px-2 d-flex justify-content-between align-items-center"> 
+                        {% if request.user.is_authenticated %}
+                            <a class="btn btn-success text-uppercase" href="#" onclick="add('{{book.id}}')">Add to cart</a>
+                        {% else %}
+                        <a class="btn btn-success text-uppercase" href="{% url 'login'%}">Add to cart</a>
+
+                        {% endif %}
+                            <!-- <div class="add"> <span class="product_fav"><i class="fa fa-heart-o"></i></span> <span class="product_fav"><i class="fa fa-opencart"></i></span> </div> -->
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div style="width: 100%; text-align: center;  ">
+                    <div class="text-center" style="max-width: 450px; margin:0 auto;"><img src="{% static 'LandingPage/img/no_courses.svg'%}" alt=""></div>
+                </div> 
+                {% endif %}
+               
+            </div>
+            <div class="text-center">
+                <ul class="pagination_list">
+                    {% if books.has_previous %}
+                        <li class="active"><a href="?page={{ books.privious_page_number }}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+                    {% endif %}	
+                        <li><a href="#">{{ books.number }}</a></li>
+                        
+                    {% if books.has_next %}
+                        <li><a href='?page={{ books.next_page_number }}'><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    {% endif %}
+                    </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+
+<script>
+function add(id){
+    var formData = new FormData();
+        formData.append('product',id);
+        formData.append('quantity',1);
+
+
+
+
+$.ajax({
+  url: "http://127.0.0.1:8000/book/cart/",
+  data: formData,
+  contentType: false,
+  processData: false,
+  headers: {
+                      "X-CSRFTOKEN": "{{ csrf_token }}"
+              },
+  type: 'POST',
+  beforeSend: function() { 
+    // $('#course_create .fa').show(); 
+},
+  complete: function() { 
+    // $('#course_create .fa').hide(); 
+
+  },
+  
+  error: function(xhr, status, error) {
+      alert(error);
+  },
+  success: function(response) {
+        window.location.reload()
+}
+});
+
+}
+
+$( "#search_form" ).submit(function( event ) {
+  event.preventDefault();
+
+  var formData = new FormData();
+        formData.append('search',$('#search_field').val());
+
+
+
+$.ajax({
+  url: "{% url 'search' %}",
+  data: formData,
+  contentType: false,
+  processData: false,
+  headers: {
+                      "X-CSRFTOKEN": "{{ csrf_token }}"
+              },
+  type: 'POST',
+  beforeSend: function() { 
+    // $('#course_create .fa').show(); 
+},
+  complete: function() { 
+    // $('#course_create .fa').hide(); 
+
+  },
+  
+  error: function(xhr, status, error) {
+      alert(error);
+  },
+  success: function(response) {
+    var element = document.getElementById("main_product");
+    element.innerHTML=""
+    var data =response.filter
+    console.log(data)
+    for(let i=0;i<data.length;i++){
+
+    var span_discount=document.createElement("span");
+    var span_product_fav=document.createElement("span");
+    span_product_fav.classList.add("product_fav");
+    var span_price=document.createElement("span")
+    var span_price_symbol=document.createElement("span")
+    span_discount.classList.add("off","bg-success")
+    span_discount.innerText = "-25% OFF";
+
+
+    var div_col = document.createElement("div");
+     div_col.classList.add("col-md-4");
+    var div_product = document.createElement("div"); 
+    div_product.classList.add("product","py-4");
+    var div_img = document.createElement("div"); 
+    div_img.classList.add("text-center");
+    var div_about = document.createElement("div"); 
+    div_about.classList.add("about","text-center");
+    var div_cart = document.createElement("div")
+    div_cart.classList.add("cart-button","mt-3","px-2","d-flex","justify-content-between","align-items-center");
+    var div_innr_cart = document.createElement("div")
+    div_innr_cart.classList.add("add");
+    var img = document.createElement("img");
+    var h5_title = document.createElement("h5");
+    var button = document.createElement("button");
+    button.classList.add("btn", "btn-primary","text-uppercase")
+    button.innerText="Add to Cart"
+    
+    div_cart.appendChild(button);
+
+
+    div_product.appendChild(span_discount);
+    var title_anchor = document.createElement("a");
+    // title_anchor.classList.add("streched-link");
+    title_anchor.innerText=data[i]["fields"]['title'];
+    title_anchor.setAttribute('href', "http://127.0.0.1:8000/book/detail/"+data[i]["pk"]+"/");
+    h5_title.appendChild(title_anchor);
+
+    span_price.innerText=data[i]["fields"]['price'];
+    span_price_symbol.innerHTML="&#8377;";
+    div_about.appendChild(h5_title);
+    div_about.appendChild(span_price);
+    div_about.appendChild(span_price_symbol);
+
+
+
+    img.src="http://127.0.0.1:8000/media/"+data[i]["fields"]['cover_image'];
+    img.width="200"
+    img.height="250"
+    div_img.appendChild(img);
+    div_col.appendChild(div_product);
+
+    div_product.appendChild(div_img);
+    div_product.appendChild(div_about);
+    div_product.appendChild(div_cart);
+    element.appendChild(div_product);
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+              
+          
+  }
+});
+
+
+
+
+});
+
+
+
+
+
+    $(document).ready(function(){
+  $(":checked").attr('checked', false);
+});
+    $('input[type=checkbox]').change(function () {
+     var lis= $('.form-check-input:checked').map(function(_, el) {
+          return $(el).val();
+        }).get();
+
+        var formData = new FormData();
+        formData.append('filters',lis)
+
+
+$.ajax({
+  url: "{% url 'filters' %}",
+  data: formData,
+  contentType: false,
+  processData: false,
+  headers: {
+                      "X-CSRFTOKEN": "{{ csrf_token }}"
+              },
+  type: 'POST',
+  beforeSend: function() { 
+    // $('#course_create .fa').show(); 
+},
+  complete: function() { 
+    // $('#course_create .fa').hide(); 
+
+  },
+  
+  error: function(xhr, status, error) {
+      alert(error);
+  },
+  success: function(response) {
+    var element = document.getElementById("main_product");
+    element.innerHTML=""
+    var data =response.filter
+    console.log(data)
+    for(let i=0;i<data.length;i++){
+
+    var span_discount=document.createElement("span");
+    var span_product_fav=document.createElement("span");
+    span_product_fav.classList.add("product_fav");
+    var span_price=document.createElement("span")
+    var span_price_symbol=document.createElement("span")
+    span_discount.classList.add("off","bg-success")
+    span_discount.innerText = "-25% OFF";
+
+
+    var div_col = document.createElement("div");
+     div_col.classList.add("col-md-4");
+    var div_product = document.createElement("div"); 
+    div_product.classList.add("product","py-4");
+    var div_img = document.createElement("div"); 
+    div_img.classList.add("text-center");
+    var div_about = document.createElement("div"); 
+    div_about.classList.add("about","text-center");
+    var div_cart = document.createElement("div")
+    div_cart.classList.add("cart-button","mt-3","px-2","d-flex","justify-content-between","align-items-center");
+    var div_innr_cart = document.createElement("div")
+    div_innr_cart.classList.add("add");
+    var img = document.createElement("img");
+    var h5_title = document.createElement("h5");
+    var button = document.createElement("button");
+    button.classList.add("btn", "btn-primary","text-uppercase")
+    button.innerText="Add to Cart"
+    
+    div_cart.appendChild(button);
+
+
+    div_product.appendChild(span_discount);
+    var title_anchor = document.createElement("a");
+    // title_anchor.classList.add("streched-link");
+    title_anchor.innerText=data[i]["fields"]['title'];
+    title_anchor.setAttribute('href', "http://127.0.0.1:8000/book/detail/"+data[i]["pk"]+"/");
+    h5_title.appendChild(title_anchor);    
+    span_price.innerText=data[i]["fields"]['price'];
+    span_price_symbol.innerHTML="&#8377;";
+    div_about.appendChild(h5_title);
+    div_about.appendChild(span_price);
+    div_about.appendChild(span_price_symbol);
+
+
+
+    img.src="http://127.0.0.1:8000/media/"+data[i]["fields"]['cover_image'];
+    img.width="200"
+    img.height="250"
+    div_img.appendChild(img);
+    div_col.appendChild(div_product);
+
+    div_product.appendChild(div_img);
+    div_product.appendChild(div_about);
+    div_product.appendChild(div_cart);
+    element.appendChild(div_product);
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+              
+          
+  }
+});
+
+
+    
+    });
+  </script>
+
+{% endblock script %}

@@ -1,0 +1,255 @@
+{% extends 'base2.html'%}
+{% load static %}
+{% block style %}
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif
+    }
+
+    .container {
+        background: linear-gradient(110.1deg, rgba(34, 126, 34, 1) 2.9%, rgba(168, 251, 60, 1) 90.3%);
+        border: none;
+        border-radius: none
+    }
+
+    .abc {
+        padding-left: 40px
+    }
+
+    .pqr {
+        padding-right: 70px;
+        padding-top: 14px
+    }
+
+    .para {
+        float: right;
+        margin-right: 0;
+        padding-left: 80%;
+        top: 0
+    }
+
+    .fa-star {
+        color: yellow
+    }
+
+    li {
+        list-style: none;
+        line-height: 50px;
+        color: white;
+    }
+
+    .col-md-2 {
+        padding-bottom: 20px;
+        font-weight: bold
+    }
+
+    .col-md-2 a {
+        text-decoration: none;
+        color: #000
+    }
+
+    .col-md-2.mio {
+        font-size: 12px;
+        padding-top: 7px
+    }
+
+    .des::after {
+        content: '.';
+        font-size: 0;
+        display: block;
+        border-radius: 20px;
+        height: 6px;
+        width: 55%;
+        background: yellow;
+        margin: 14px 0
+    }
+
+    .r4 {
+        padding-left: 25px
+    }
+
+    .btn-outline-warning {
+        border-radius: 0;
+        border: 2px solid yellow;
+        color: #000;
+        font-size: 12px;
+        font-weight: bold;
+        width: 70%
+    }
+
+    @media screen and (max-width: 620px) {
+        .container {
+            width: 98%;
+            display: flex;
+            flex-flow: column;
+            text-align: center
+        }
+
+        .des::after {
+            content: '.';
+            font-size: 0;
+            display: block;
+            border-radius: 20px;
+            height: 6px;
+            width: 35%;
+            background: yellow;
+            margin: 10px auto
+        }
+
+        .pqr {
+            text-align: center;
+            margin: 0 30px
+        }
+
+        .para {
+            text-align: center;
+            padding-left: 90px;
+            padding-top: 10px
+        }
+
+        .klo {
+            display: flex;
+            text-align: center;
+            margin: 0 auto;
+            margin-right: 40px
+        }
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class="container py-4 my-4 mx-auto d-flex flex-column">
+    <div class="header">
+        <div class="row r1">
+            <div class="col-md-9 abc text-white">
+                <h1>{{book.title}}</h1>
+            </div>
+            <div class="col-md-3 text-right pqr"><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                    class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+            <p class="text-right para text-white">Based on 250 Review</p>
+        </div>
+    </div>
+    <div class="container-body mt-4">
+        <div class="row r3">
+            <div class="col-md-5 p-0 klo">
+                <ul>
+                    <li>ISBN : {{book.isbn}}</li>
+                    <li>Author : {{book.author.first_name}} {{book.author.last_name}}</li>
+                    <li>Genre : {{book.get_genre}}</li>
+                    <li>On Stock : {{book.stock}}</li>
+                    <li>Edition : {{book.edition}}</li>
+                    <li>Price : {{book.price}} &#8377;</li>
+                    <li>Publisher : {{book.publisher.name}}</li>
+                    <li>Publish Date : {{book.publish_date}}</li>
+
+
+                    <li>Normal Delivery : 4-5 Days</li>
+                    <li>Express Delivery : 2-3 Days</li>
+                    <li>COD Available (All Over India)</li>
+                </ul>
+            </div>
+            <div class="col-md-7">
+                <div> <img src="{{book.cover_image.url}}" width="90%" height="70%"> </div>
+                <div class="row text-center">
+                    <div class="col-sm-12 text-center my-2">{% if request.user.is_authenticated %}<a href="#"
+                            onclick="add('{{book.id}}')"><button class="btn btn-danger"> ADD TO CART</button></a>{% else %}<a href="{% url 'login' %}"><button class="btn btn-danger">ADD TO
+                                CART</button></a>{% endif %}</div>
+                    <div class="col-sm-12 text-center my-2">{% if request.user.is_authenticated %}<a href="#"
+                            onclick="add('{{book.id}}')"><button type="button" class="btn btn-outline-warning w-25">BUY
+                                NOW</button></a>{% else %}<a href="{% url 'login'%}"><button type="button"
+                                class="btn btn-outline-warning w-25">BUY NOW</button></a>{% endif %}</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer d-flex flex-column mt-5" style="background-color: transparent;">
+        <div class="row r4">
+            <div class="col-md-2 myt des"><a href="#">Reviews</a></div>
+            <!-- <div class="col-md-2 myt "><a href="#">Review</a></div> -->
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="{% url 'user_reviews' %}" method="POST">
+                        {% csrf_token %}
+                        <input name="book_id" value="{{book.id}}" hidden>
+                        <input name="" value="{{request.id}}" hidden>
+                        <div class="input-group mb-3">
+                            {% if request.user.is_authenticated %}
+
+                            <input type="text" class="form-control " placeholder="Add your reviews"
+                                aria-label="Recipient's username" name="review" aria-describedby="button-addon2">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">add</button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12 mt-3">
+                    <div class="input-group mb-3">
+                        <div class="" style="height: 200px; width: 100%; overflow: scroll;">
+                            {% for i in review_queryset %}
+                                <div class="row my-2">
+                                    <div class="col-sm-2">
+                                        <img class="rounded" src="https://storage.googleapis.com/stateless-campfire-pictures/2019/05/e4629f8e-defaultuserimage-15579880664l8pc.jpg"
+                                            width="50px" height="60px"  alt="" srcset="">
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="text-left">
+                                            <h5 class="text-white font-weight-bold">{{i.customer}}</h5>
+                                            <h6 class="text-white" style="font-size: smaller;">- {{i.added}}</h6>
+                                        </div>
+                                        <div class="">
+                                            <h5 class="text-white">{{i.text}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+
+<script>
+    function add(id) {
+        var formData = new FormData();
+        formData.append('product', id);
+        formData.append('quantity', 1);
+
+
+
+
+        $.ajax({
+            url: "http://127.0.0.1:8000/book/cart/",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                "X-CSRFTOKEN": "{{ csrf_token }}"
+            },
+            type: 'POST',
+            beforeSend: function () {
+                // $('#course_create .fa').show(); 
+            },
+            complete: function () {
+                // $('#course_create .fa').hide(); 
+
+            },
+
+            error: function (xhr, status, error) {
+                alert(error);
+            },
+            success: function (response) {
+                window.location.reload()
+            }
+        });
+
+    }
+</script>
+{% endblock script %}

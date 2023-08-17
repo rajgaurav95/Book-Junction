@@ -1,0 +1,226 @@
+{% extends 'base2.html'%}
+{% load static %}
+
+   {% block style %}
+   <style>
+
+        /*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+
+.border-md {
+    border-width: 2px;
+}
+
+.btn-facebook {
+    background: #405D9D;
+    border: none;
+}
+
+.btn-facebook:hover, .btn-facebook:focus {
+    background: #314879;
+}
+
+.btn-twitter {
+    background: #42AEEC;
+    border: none;
+}
+
+.btn-twitter:hover, .btn-twitter:focus {
+    background: #1799e4;
+}
+
+
+
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSES
+* ==========================================
+*
+*/
+
+body {
+    min-height: 100vh;
+    background: linear-gradient( 110.1deg,  rgba(34,126,34,1) 2.9%, rgba(168,251,60,1) 90.3% );
+}
+
+.form-control:not(select) {
+    padding: 1.5rem 0.5rem;
+}
+
+select.form-control {
+    height: 52px;
+    padding-left: 0.5rem;
+}
+
+.form-control::placeholder {
+    color: #ccc;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.form-control:focus {
+    box-shadow: none;
+}
+
+    </style>
+    {% endblock style %}
+   
+    {% block content %}
+    
+      
+      
+      <div class="container">
+        <div class="row py-1 mt-1 align-items-center text-center">
+          <!-- For Demo Purpose -->
+          <div class="col-md-5 pr-lg-5 mb-5 mb-md-0 text-white">
+            <img src="https://res.cloudinary.com/mhmd/image/upload/v1569543678/form_d9sh6m.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
+            <h1>Create an Account</h1>
+            <p class="font-italic mb-0">Thanks For being with Us.</p>
+           
+          </div>
+      
+          <!-- Registeration Form -->
+          <div class="col-md-7 col-lg-6 ml-auto">
+            <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+              <div class="row">
+      
+                <!-- First Name -->
+                <div class="input-group col-lg-6 mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                      <i class="fa fa-user text-muted"></i>
+                    </span>
+                  </div>
+                  <input id="id_first_name" type="text" name="first_name" placeholder="First Name" class="form-control bg-white border-left-0 border-md">
+                </div>
+      
+                <!-- Last Name -->
+                <div class="input-group col-lg-6 mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                      <i class="fa fa-user text-muted"></i>
+                    </span>
+                  </div>
+                  <input id="id_last_name" type="text" name="last_name" placeholder="Last Name" class="form-control  border-left-0 border-md">
+                </div>
+      
+                <!-- Email Address -->
+                <div class="input-group col-lg-12 mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                      <i class="fa fa-envelope text-muted"></i>
+                    </span>
+                  </div>
+                  <input id="id_email" type="email" name="email" placeholder="Email Address" class="form-control bg-white border-left-0 border-md">
+                </div>
+      
+                <!-- Phone Number -->
+                <div class="input-group col-lg-12 mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                      <i class="fa fa-phone-square text-muted"></i>
+                    </span>
+                  </div>
+                  <select id="countryCode" name="countryCode" style="max-width: 80px" class="custom-select form-control bg-white border-left-0 border-md h-100 font-weight-bold text-muted">
+                    <option default>+91</option>
+                    
+                  </select>
+                  <input id="id_phone" type="tel" name="phone" placeholder="Phone Number" class="form-control bg-white border-md border-left-0 pl-3">
+                </div>
+    
+                <div class="input-group col-lg-12 mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                      <i class="fa fa-lock text-muted"></i>
+                    </span>
+                  </div>
+                  <input id="id_password1" type="password" name="password1" placeholder="Password" class="form-control bg-white border-left-0 border-md">
+                </div>
+      
+                <!-- Password Confirmation -->
+                <div class="input-group col-lg-12 mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                      <i class="fa fa-lock text-muted"></i>
+                    </span>
+                  </div>
+                  <input id="id_password2" type="password" name="password2" placeholder="Confirm Password" class="form-control bg-white border-left-0 border-md">
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="form-group col-lg-12 mx-auto mb-0">
+                     <button type="submit" class="btn btn-primary btn-block py-2">Create your account</button> </span>
+                </div>
+      
+                <!-- Divider Text -->
+                <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
+                  <div class="border-bottom w-100 ml-5"></div>
+                  <span class="px-2 small text-muted font-weight-bold text-muted">OR</span>
+                  <div class="border-bottom w-100 mr-5"></div>
+                </div>
+      
+                <!-- Social Login -->
+                <div class="form-group col-lg-12 mx-auto">
+                  <a href="#" class="btn btn-primary btn-block py-2 btn-facebook">
+                    <i class="fa fa-facebook-f mr-2"></i>
+                    <span class="font-weight-bold">Continue with Facebook</span>
+                  </a>
+                  <a href="#" class="btn btn-primary btn-block py-2 btn-twitter">
+                    <i class="fa fa-twitter mr-2"></i>
+                    <span class="font-weight-bold">Continue with Twitter</span>
+                  </a>
+                </div>
+      
+                <!-- Already Registered -->
+                <div class="text-center w-100">
+                  <p class="text-white font-weight-bold">Already Registered? <a href="#" class="text-white ml-2">Login</a></p>
+                </div>
+      
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+       {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                <script>swal("Yuppp", "{{message}}", "success");</script>
+            {% elif message.tags == 'info'%}
+                <script>swal("See", "{{message}}", "info");</script>
+
+            {% elif message.tags == 'warning'%}
+                  <script>swal("Warning", "{{message}}", "warning");</script>
+
+            {% elif message.tags == 'error'%}
+                <script>swal("Oops", "{{message}}", "error");</script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+      {% endblock content %}
+        
+ {% block script %}
+ <script>
+     // For Demo Purpose [Changing input group text on focus]
+$(function () {
+    $('input, select').on('focus', function () {
+        $(this).parent().find('.input-group-text').css('border-color', '#80bdff');
+    });
+    $('input, select').on('blur', function () {
+        $(this).parent().find('.input-group-text').css('border-color', '#ced4da');
+    });
+});
+
+ </script>
+ {% endblock script %}
+
+
+
+
